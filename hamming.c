@@ -1,72 +1,59 @@
 #include <stdio.h>
-#include <stdlib.h>
-int main()
+
+void main()
 {
-    int a[7], i, s1, s2, s3, flag = 0;
-    printf("Enter the 7 bits hamming code: ");
-    for (i = 7; i >= 1; i--)
+    int data[10];
+    int datarec[10], c, c1, c2, c3, i;
+
+    printf("Enter 4 bits of data one by one\n");
+    scanf("%d", &data[0]);
+    scanf("%d", &data[1]);
+    scanf("%d", &data[2]);
+    scanf("%d", &data[4]);
+
+    // Calculation of even parity
+    data[6] = data[0] ^ data[2] ^ data[4];
+    data[5] = data[0] ^ data[1] ^ data[4];
+    data[3] = data[0] ^ data[1] ^ data[2];
+
+    printf("\nEncoded data is\n");
+    for (i = 0; i < 7; i++)
+        printf("%d", data[i]);
+
+    printf("\n\nEnter received data bits one by one\n");
+    for (i = 0; i < 7; i++)
+        scanf("%d", &datarec[i]);
+
+    c1 = datarec[6] ^ datarec[4] ^ datarec[2] ^ datarec[0];
+    c2 = datarec[5] ^ datarec[4] ^ datarec[1] ^ datarec[0];
+    c3 = datarec[3] ^ datarec[2] ^ datarec[1] ^ datarec[0];
+    c = c3 * 4 + c2 * 2 + c1;
+
+    if (c == 0)
     {
-        scanf("%d", &a[i]);
-    }
-    s1 = a[1] + a[3] + a[5] + a[7];
-    s2 = a[2] + a[3] + a[6] + a[7];
-    s3 = a[4] + a[5] + a[6] + a[7];
-    // For p1 parity bit
-    if (s1 % 2 != 0)
-    {
-        flag = 1;
-        if (a[1] == 1)
-        {
-            a[1] = 0;
-        }
-        else
-        {
-            a[1] = 1;
-        }
-    }
-    // For p2 parity bit
-    if (s2 % 2 != 0)
-    {
-        flag = 1;
-        if (a[2] == 1)
-        {
-            a[2] = 0;
-        }
-        else
-        {
-            a[2] = 1;
-        }
-    }
-    // For p4 parity bit
-    if (s3 % 2 != 0)
-    {
-        flag = 1;
-        if (a[4] == 1)
-        {
-            a[4] = 0;
-        }
-        else
-        {
-            a[4] = 1;
-        }
-    }
-    if (flag == 1)
-    {
-        printf("Hamming Code has errors\n");
-        printf("Correct Hamming Code: ");
-        for (i = 7; i >= 1; i--)
-        {
-            printf("%d", a[i]);
-        }
+        printf("\nNo error while transmission of data\n");
     }
     else
     {
-        printf("Hamming code is correct.");
-        printf("Hamming Code: ");
-        for (i = 7; i >= 1; i--)
+        printf("\nError on position %d", c);
+
+        printf("\nData sent : ");
+        for (i = 0; i < 7; i++)
+            printf("%d", data[i]);
+
+        printf("\nData received : ");
+        for (i = 0; i < 7; i++)
+            printf("%d", datarec[i]);
+        printf("\nCorrect message is\n");
+
+        // if errorneous bit is 0 we complement it else vice versa
+        if (datarec[7 - c] == 0)
+            datarec[7 - c] = 1;
+        else
+            datarec[7 - c] = 0;
+        for (i = 0; i < 7; i++)
         {
-            printf("%d", a[i]);
+            printf("%d", datarec[i]);
         }
     }
-    return 0;
 }
