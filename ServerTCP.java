@@ -1,17 +1,24 @@
-import java.io.*;
 import java.net.*;
+import java.io.*;
 
 class ServerTCP {
-    public static void main(String[] args) throws Exception {
-        String msg;
-        ServerSocket ss = new ServerSocket(80);
-        while (true) {
-            Socket s1 = ss.accept();
-            String week[] = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-            int i = (int) (Math.random() * week.length);
-            msg = week[i];
-            PrintStream ps = new PrintStream(s1.getOutputStream());
-            ps.println(msg);
+    public static void main(String args[]) throws Exception {
+        ServerSocket ss = new ServerSocket(3333);
+        Socket s = ss.accept();
+        DataInputStream din = new DataInputStream(s.getInputStream());
+        DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String str = "", str2 = "";
+        while (!str.equals("stop")) {
+            str = din.readUTF();
+            System.out.println("client says: " + str);
+            str2 = br.readLine();
+            dout.writeUTF(str2);
+            dout.flush();
         }
+        din.close();
+        s.close();
+        ss.close();
     }
 }

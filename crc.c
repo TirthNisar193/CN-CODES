@@ -17,7 +17,7 @@ void XOR(){
     // if the bits are different the output is 1
     for(j = 1;j < N; j++)
     check_value[j] = (( check_value[j] == gen_poly[j])?'0':'1');
-
+    
 }
 // Function to check for errors on the receiver side
 void receiver(){
@@ -28,6 +28,7 @@ void receiver(){
     printf("Data received: %s", data);
 // Cyclic Redundancy Check
     crc();
+    //printf("%s",check_value);
 // Check if the remainder is zero to find the error
     for(i=0;(i<N-1) && (check_value[i]!='1');i++);
         if(i<N-1)

@@ -1,5 +1,5 @@
 import java.io.*;
-// import java.net.InetAddress;
+//import java.net.InetAddress;
 
 public class Subnet{
     public static void main(String[] args) throws IOException{
